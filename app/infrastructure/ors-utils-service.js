@@ -439,7 +439,7 @@ angular.module("orsApp.utils-service", []).factory("orsUtilsService", [
             : lists.isochroneOptionList.reverseFlow.start,
         /*jshint +W014 */
         profile: lists.profiles[settings.profile.type].request,
-        attributes: "area|reachfactor|total_pop",
+        //PATCH ISO ERROR attributes: "area|reachfactor|total_pop",
         options: JSON.stringify(orsUtilsService.generateOptions(settings))
       };
       // remove options if empty
