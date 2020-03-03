@@ -342,7 +342,7 @@ angular.module("orsApp").directive("orsMap", () => {
           orsCookiesFactory.getMapOptions() &&
           orsCookiesFactory.getMapOptions().msi
             ? orsCookiesFactory.getMapOptions().msi
-            : 0;
+            : 3;
 
         // mapOptionsInitSubject is a replay subject and only subscribes once
         let mapInitSubject = orsSettingsFactory.mapOptionsInitSubject.subscribe(
@@ -350,7 +350,7 @@ angular.module("orsApp").directive("orsMap", () => {
             $scope.showHeightgraph = angular.isDefined(settings.showHeightgraph)
               ? settings.showHeightgraph
               : !$scope.smallScreen;
-            if (settings.lat && settings.lng && settings.zoom) {
+            /* if (settings.lat && settings.lng && settings.zoom) {
               $scope.orsMap.setView(
                 {
                   lat: settings.lat,
@@ -377,7 +377,8 @@ angular.module("orsApp").directive("orsMap", () => {
                     $scope.mapModel.map.addControl($scope.welcomeMsgBox);
                 }, 500);
               }
-            }
+            }*/
+            $scope.orsMap.setView(ENV.center, ENV.zoom);
             mapInitSubject.dispose();
           }
         );
@@ -459,13 +460,13 @@ angular.module("orsApp").directive("orsMap", () => {
           setSettings();
         };
         $scope.baseLayers = {
-          OpenMapSurfer: mapsurfer,
-          "TopPlus-Web-Open": bkgtopplus,
-          "TopPlus-Web-Open Greyscale": bkgtopplusgrey,
+          //OpenMapSurfer: mapsurfer,
+          //"TopPlus-Web-Open": bkgtopplus,
+          //"TopPlus-Web-Open Greyscale": bkgtopplusgrey,
           OpenStreetMap: openstreetmap,
-          OpenCycleMap: opencyclemap,
-          "Transport Dark": transportdark,
-          Outdoors: outdoors
+          OpenCycleMap: opencyclemap
+          //"Transport Dark": transportdark,
+          //Outdoors: outdoors
         };
         $scope.overlays = {
           // "Hillshade": hillshade
@@ -473,6 +474,8 @@ angular.module("orsApp").directive("orsMap", () => {
         $scope.mapModel.map.on("load", evt => {
           // add mapstyle
           angular.forEach($scope.baseLayers, (value, key) => {
+            console.log("scope.mapStyleId", value, key, $scope.mapStyleId);
+
             if (value.options.id === $scope.mapStyleId) {
               console.log($scope.mapStyleId, $scope.baseLayers);
               $scope.baseLayers[key].addTo($scope.orsMap);
